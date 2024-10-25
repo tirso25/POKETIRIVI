@@ -1,5 +1,5 @@
 git add ''
 git rm ''
-git commit -m "Delete test.html"
+git commit -m ""
 git push -u origin main
 git pull

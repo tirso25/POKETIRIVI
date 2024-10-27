@@ -11,3 +11,9 @@ for (const key in tareas) {
 let img = document.createElement('img');
 img.setAttribute('src', '/img/1.png');
 frame.appendChild(img);
+
+
+
+let img = document.createElement('img');
+img.src = "./img/1.png";
+frame.appendChild(img)

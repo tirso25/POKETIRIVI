@@ -1,6 +1,3 @@
-// window.localStorage.removeItem('favoritos')
-let nombresFavoritos =  new Array(window.localStorage.getItem('favoritos'));
-
 
 function verCartas() {
     let main = document.querySelector('main');
@@ -189,9 +186,8 @@ function comprobarTipo(divCard, pokemonActual) {
     
 }
 
-//BUSACDO EN INTERNET
-window.onload = function () {
-    const numRan = Math.floor(Math.random() * pokemon.length) + 1;
-    document.body.style.cursor = `url('./img/${numRan}.png'), auto`;
+function puntero() {
+    let puntero = Math.floor(Math.random() * pokemon.length) + 1;
+    document.body.style.cursor = `url('./img/${puntero}.png'), auto`;
 }
 

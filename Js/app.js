@@ -1,4 +1,4 @@
-puntero();
+
 function verCartas() {
     let main = document.querySelector('main');
     let divMain = document.createElement('div');

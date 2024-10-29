@@ -1,3 +1,4 @@
+puntero();
 function verCartas() {
     let main = document.querySelector('main');
     let divMain = document.createElement('div');
@@ -157,9 +158,8 @@ function comprobarTipo(divCard, pokemonActual) {
     }
 }
 
-//BUSCADO EN INTERNET
+//BUSACDO EN INTERNET
 window.onload = function () {
     const numRan = Math.floor(Math.random() * pokemon.length) + 1;
     document.body.style.cursor = `url('./img/${numRan}.png'), auto`;
-
 }

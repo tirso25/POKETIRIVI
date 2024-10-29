@@ -1,3 +1,6 @@
+// window.localStorage.removeItem('favoritos')
+let nombresFavoritos =  new Array(window.localStorage.getItem('favoritos'));
+
 
 function verCartas() {
     let main = document.querySelector('main');
@@ -18,6 +21,27 @@ function verCartas() {
         let spanFav = document.createElement('span');
         spanFav.setAttribute('class', 'material-symbols-outlined');
         spanFav.textContent = 'favorite';
+        for (const j in nombresFavoritos) {
+            if(nombresFavoritos.includes(pokemon[i].nombre)){
+                spanFav.style.color = 'red';
+            } 
+                
+        }
+        spanFav.addEventListener('click',function(){
+            if(spanFav.style.color == 'red'){
+                spanFav.style.color = 'black'; 
+                let lugar = nombresFavoritos.indexOf(pokemon[i].nombre);
+                nombresFavoritos.splice(lugar,1);
+                window.localStorage.setItem('favoritos',nombresFavoritos); 
+            } else {
+                spanFav.style.color = 'red';
+                nombresFavoritos.push(pokemon[i].nombre); 
+                window.localStorage.setItem('favoritos',nombresFavoritos); 
+
+            }
+            
+        })
+        
 
         let divImg = document.createElement('div');
         divImg.setAttribute('class', 'card-image');
@@ -48,6 +72,7 @@ function verCartas() {
             li.textContent = `${j} : ${est[j]}`;
             ul.appendChild(li);
         }
+        
 
         main.appendChild(divMain);
         divMain.appendChild(divCard);
@@ -62,8 +87,11 @@ function verCartas() {
         divCont.appendChild(pTip);
         divCont.appendChild(bUl);
         divCont.appendChild(ul);
+        
+        
     }
     main.appendChild(divMain);
+    
 }
 verCartas();
 
@@ -156,6 +184,9 @@ function comprobarTipo(divCard, pokemonActual) {
     } else if (pokemonActual.tipos[0].includes('Normal')) {
         divCard.style.border = '3px solid rgb(75, 75, 75)';
     }
+
+        
+    
 }
 
 //BUSACDO EN INTERNET
@@ -163,3 +194,4 @@ window.onload = function () {
     const numRan = Math.floor(Math.random() * pokemon.length) + 1;
     document.body.style.cursor = `url('./img/${numRan}.png'), auto`;
 }
+

@@ -1,4 +1,6 @@
-
+// nombresFavoritos = new Array(window.localStorage.removeItem('favoritos'));
+// nombresFavoritos = window.localStorage.setItem('favoritos', '')
+let nombresFavoritos = JSON.parse(window.localStorage.getItem('favoritos'));
 function verCartas() {
     let main = document.querySelector('main');
     let divMain = document.createElement('div');
@@ -19,21 +21,24 @@ function verCartas() {
         spanFav.setAttribute('class', 'material-symbols-outlined');
         spanFav.textContent = 'favorite';
         for (const j in nombresFavoritos) {
-            if(nombresFavoritos.includes(pokemon[i].nombre)){
+            
+            if(nombresFavoritos[j] == (pokemon[i].id)){
+                console.log(pokemon[i].id);
                 spanFav.style.color = 'red';
             } 
                 
         }
         spanFav.addEventListener('click',function(){
             if(spanFav.style.color == 'red'){
-                spanFav.style.color = 'black'; 
-                let lugar = nombresFavoritos.indexOf(pokemon[i].nombre);
+                spanFav.style.color = 'black';
+                let lugar = nombresFavoritos.indexOf(pokemon[i].id);
                 nombresFavoritos.splice(lugar,1);
-                window.localStorage.setItem('favoritos',nombresFavoritos); 
+                
+                window.localStorage.setItem('favoritos', JSON.stringify(nombresFavoritos)); 
             } else {
                 spanFav.style.color = 'red';
-                nombresFavoritos.push(pokemon[i].nombre); 
-                window.localStorage.setItem('favoritos',nombresFavoritos); 
+                nombresFavoritos.push(pokemon[i].id); 
+                window.localStorage.setItem('favoritos', JSON.stringify(nombresFavoritos)); 
 
             }
             

@@ -1,12 +1,42 @@
-// nombresFavoritos = new Array(window.localStorage.removeItem('favoritos'));
-// nombresFavoritos = window.localStorage.setItem('favoritos', '')
-let nombresFavoritos = JSON.parse(window.localStorage.getItem('favoritos'));
-function verCartas() {
-    let main = document.querySelector('main');
-    let divMain = document.createElement('div');
+// idFavoritos = new Array(window.localStorage.removeItem('favoritos'));
+// idFavoritos = window.localStorage.setItem('favoritos', '')
+let main = document.querySelector('main');
+let divMain = document.createElement('div');
+let idFavoritos = []
+if(window.localStorage.getItem('favoritos') == ''){
+    idFavoritos = []
+} else {
+    idFavoritos = JSON.parse(window.localStorage.getItem('favoritos'));
+}
+function buscador() {
+    let header = document.querySelector('header');
+    let input = document.createElement('input');
+    input.setAttribute('type' , 'text');
+    input.setAttribute('placeholder' , 'Escribe aqui lo que quieras buscar');
+    input.addEventListener('keyup',function(){
+
+        valorBuscador(input);
+    })
+    header.appendChild(input);
+}
+
+function valorBuscador(input){
+    let valorDelInput = input.value;
+
+    divMain.innerHTML = "";
+    verCartas(valorDelInput);
+}
+buscador()
+function verCartas(valorDelInput) {
+    let verFavs = document.createElement('button');
+    verFavs.textContent = 'Favoritos';
+    verFavs.style.color = 'red';
+    verFavs.setAttribute('onclick','verFavoritos()')
+    
     divMain.setAttribute('class', 'divMain');
     agregarOwners(divMain);
     for (let i in pokemon) {
+        if(pokemon[i]['nombre'].includes(valorDelInput)){
         let divCard = document.createElement('div');
         divCard.setAttribute('class', 'card');
         comprobarTipo(divCard, pokemon[i]);
@@ -20,10 +50,10 @@ function verCartas() {
         let spanFav = document.createElement('span');
         spanFav.setAttribute('class', 'material-symbols-outlined');
         spanFav.textContent = 'favorite';
-        for (const j in nombresFavoritos) {
+        for (const j in idFavoritos) {
             
-            if(nombresFavoritos[j] == (pokemon[i].id)){
-                console.log(pokemon[i].id);
+            if(idFavoritos[j] == (pokemon[i].id)){
+
                 spanFav.style.color = 'red';
             } 
                 
@@ -31,14 +61,14 @@ function verCartas() {
         spanFav.addEventListener('click',function(){
             if(spanFav.style.color == 'red'){
                 spanFav.style.color = 'black';
-                let lugar = nombresFavoritos.indexOf(pokemon[i].id);
-                nombresFavoritos.splice(lugar,1);
+                let lugar = idFavoritos.indexOf(pokemon[i].id);
+                idFavoritos.splice(lugar,1);
                 
-                window.localStorage.setItem('favoritos', JSON.stringify(nombresFavoritos)); 
+                window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
             } else {
                 spanFav.style.color = 'red';
-                nombresFavoritos.push(pokemon[i].id); 
-                window.localStorage.setItem('favoritos', JSON.stringify(nombresFavoritos)); 
+                idFavoritos.push(pokemon[i].id); 
+                window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
 
             }
             
@@ -77,6 +107,7 @@ function verCartas() {
         
 
         main.appendChild(divMain);
+        
         divMain.appendChild(divCard);
         divCard.appendChild(divIcons);
         divCard.appendChild(divImg);
@@ -90,12 +121,13 @@ function verCartas() {
         divCont.appendChild(bUl);
         divCont.appendChild(ul);
         
-        
+    }  
     }
     main.appendChild(divMain);
+    divMain.appendChild(verFavs);
     
 }
-verCartas();
+
 
 function agregarOwners(divMain) {
     //TIRSO
@@ -196,3 +228,107 @@ function puntero() {
     document.body.style.cursor = `url('./img/${puntero}.png'), auto`;
 }
 
+function verFavoritos() {
+    
+    
+    let main = document.querySelector('main');
+    let divMain = document.createElement('div');
+    divMain.setAttribute('class', 'divMain');
+    for (let i in pokemon) {
+        for (const j in idFavoritos) {
+            
+            if(idFavoritos[j] == (pokemon[i].id)){
+
+                
+                let divCard = document.createElement('div');
+                        
+                divCard.setAttribute('class', 'card');
+                comprobarTipo(divCard, pokemon[i]);
+
+                let divIcons = document.createElement('div');
+                divIcons.setAttribute('class', 'card-icons');
+
+                let spanDel = document.createElement('span');
+                spanDel.setAttribute('class', 'material-symbols-outlined');
+                spanDel.textContent = 'delete';
+                let spanFav = document.createElement('span');
+                spanFav.setAttribute('class', 'material-symbols-outlined');
+                spanFav.textContent = 'favorite';
+                for (const j in idFavoritos) {
+                    
+                    if(idFavoritos[j] == (pokemon[i].id)){
+
+                        spanFav.style.color = 'red';
+                    } 
+                        
+                }
+                spanFav.addEventListener('click',function(){
+                    if(spanFav.style.color == 'red'){
+                        spanFav.style.color = 'black';
+                        let lugar = idFavoritos.indexOf(pokemon[i].id);
+                        idFavoritos.splice(lugar,1);
+                        
+                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
+                    } else {
+                        spanFav.style.color = 'red';
+                        idFavoritos.push(pokemon[i].id); 
+                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
+
+                    }
+                    
+                })
+                
+
+                let divImg = document.createElement('div');
+                divImg.setAttribute('class', 'card-image');
+
+                let imgPok = document.createElement('img');
+                imgPok.src = "./img/" + pokemon[i].id + ".png";
+
+                let divCont = document.createElement('div');
+                divCont.setAttribute('class', 'card-content');
+
+                let h2Nom = document.createElement('h2');
+                h2Nom.textContent = pokemon[i].nombre;
+
+                let pId = document.createElement('p');
+                pId.innerHTML = '<b>ID : </b>' + pokemon[i].id;
+
+                let pTip = document.createElement('p');
+                pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[i].tipos;
+
+                let ul = document.createElement('ul');
+                let bUl = document.createElement('b');
+                bUl.textContent = 'ESTADÍSTICAS : ';
+                ul.setAttribute('class', 'custom-list');
+
+                let est = pokemon[i].estadisticas_base;
+                for (let j in est) {
+                    li = document.createElement('li');
+                    li.textContent = `${j} : ${est[j]}`;
+                    ul.appendChild(li);
+                }
+                
+
+                main.appendChild(divMain);
+                
+                divMain.appendChild(divCard);
+                divCard.appendChild(divIcons);
+                divCard.appendChild(divImg);
+                divCard.appendChild(divCont);
+                divIcons.appendChild(spanDel);
+                divIcons.appendChild(spanFav);
+                divImg.appendChild(imgPok);
+                divCont.appendChild(h2Nom);
+                divCont.appendChild(pId);
+                divCont.appendChild(pTip);
+                divCont.appendChild(bUl);
+                divCont.appendChild(ul);
+        
+            } 
+                    
+        }
+    }
+    main.appendChild(divMain);
+    
+}

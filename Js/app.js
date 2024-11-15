@@ -1,17 +1,10 @@
-// idFavoritos = new Array(window.localStorage.removeItem('favoritos'));
-// idFavoritos = window.localStorage.setItem('favoritos', '')
 let main = document.querySelector('main');
 let divMain = document.createElement('div');
 let header = document.querySelector('header');
 let divHeader =  document.createElement('div');
-let idFavoritos = []
-
-if(window.localStorage.getItem('favoritos') == ''){
-    idFavoritos = []
-} else {
-    idFavoritos = JSON.parse(window.localStorage.getItem('favoritos'));
-}
-verCartas();
+/**
+ * Esta funcion añade las caracteristicas de la pantalla,tanto la altura como la anchura de esta,no devuelve ningun valor
+ */
 function Bom(){
     let divTamaño = document.createElement("div")
     let anchura = document.createElement("b");
@@ -27,7 +20,9 @@ function Bom(){
     divTamaño.appendChild(altura)
 
 }
-
+/**
+ * Esta funcion crea los dos selects de los "tipos" de pokemons y crea un conjunto de tipos para introducirlos en las opciones de estos. También, crea un evento en cada uno de ellos con una funcion para enviar el valor seleccionado a la funcion "valorBuscador()"
+ */
 function buscarPorTipo() {
 
     let select = document.createElement('select');
@@ -76,10 +71,12 @@ function buscarPorTipo() {
     divHeader.appendChild(select);
     divHeader.appendChild(select2);
 }
-buscarPorTipo();
+/**
+ * Buscador() no devuelve ningun valor,su funcionalidad es agregar un botón de vercartas, para, como su propio nombre indica ver todas las cartas, ya que con otros funciones o con los selects comentados anteriormente quitarán alguna carta del conjunto.Esta funcion tambien agrega un buscador, para que cuando pongas una letra,varias o un nombre de pokemon aparezca todos aquellos pokemons con ese nombre o que contengan esa/s letra/s .
+ */
 function buscador() {
 
-    let input = document.createElement('input');
+    let letra = document.createElement('input');
     let input2 = document.createElement('input');
     input2.setAttribute('type','button');
     input2.setAttribute('value','verCartas');
@@ -87,604 +84,181 @@ function buscador() {
         divMain.innerHTML = "";
         verCartas();
     })
-    input.setAttribute('type' , 'text');
-    input.setAttribute('placeholder' , 'Escribe aqui lo que quieras buscar');
-    input.addEventListener('keyup',function(){
+    letra.setAttribute('type' , 'text');
+    letra.setAttribute('placeholder' , 'Escribe aqui lo que quieras buscar');
+    letra.addEventListener('keyup',function(){
 
-        valorBuscador(input);
+        valorBuscador(letra);
     })
     header.appendChild(divHeader);
     divHeader.appendChild(input2);
-    divHeader.appendChild(input);
+    divHeader.appendChild(letra);
 }
-
-function valorBuscador(input){
-    let valorDelInput = input.value.toUpperCase();
+/**
+ * 
+ * @param {*} letra  - Recoge la/s letra/s recibidas en la funcion buscador, las pone en mayúsculas y las envía a la funcion verCartasConValor()
+ */
+function valorBuscador(letra){
+    let valorDelInput = letra.value.toUpperCase();
 
     divMain.innerHTML = "";
     verCartasConValor(valorDelInput);
 }
+/**
+ * El funcionamiento es muy similar a la anterior,recoge los dos valores de los selects (de tipos) y se los envia a la funcion verCartasConTipos()
+ * @param {*} input - opcion seleccionada del primer select
+ * @param {*} input2  - opcion seleccionada del segundo select 
+ */
 function valorBuscadorTipo(input,input2){
 
     divMain.innerHTML = "";
     verCartasConTipos(input,input2);
 }
-buscador()
-Bom();
+/**
+ * Esta funcion es practicamente la base de toda la Página Web,
+ * recibe un pokemon entero,con su tipo,nombre,..., y devuelve la carta con los parametros adecuados y la muestra. 
+ * @param {*} numeroPokemon 
+ */
+function Cartas(numeroPokemon) {
+     
+    let divCard = document.createElement('div');
+    divCard.setAttribute('class', 'card');
+    comprobarTipo(divCard, pokemon[numeroPokemon]);
+
+    let divIcons = document.createElement('div');
+    divIcons.setAttribute('class', 'card-icons');
+
+    let spanDel = document.createElement('span');
+    spanDel.setAttribute('class', 'material-symbols-outlined');
+    spanDel.textContent = 'delete';
+    let spanFav = document.createElement('span');
+    spanFav.setAttribute('class', 'material-symbols-outlined');
+    spanFav.textContent = 'favorite';
+    
+
+    let divImg = document.createElement('div');
+    divImg.setAttribute('class', 'card-image');
+
+    let imgPok = document.createElement('img');
+    imgPok.src = "./img/" + pokemon[numeroPokemon].id + ".png";
+
+    let divCont = document.createElement('div');
+    divCont.setAttribute('class', 'card-content');
+
+    let h2Nom = document.createElement('h2');
+    h2Nom.textContent = pokemon[numeroPokemon].nombre;
+
+    let pId = document.createElement('p');
+    pId.innerHTML = '<b>ID : </b>' + pokemon[numeroPokemon].id;
+
+    let pTip = document.createElement('p');
+    pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[numeroPokemon].tipos;
+
+    let ul = document.createElement('ul');
+    let bUl = document.createElement('b');
+    bUl.textContent = 'ESTADÍSTICAS : ';
+    ul.setAttribute('class', 'custom-list');
+
+    let est = pokemon[numeroPokemon].estadisticas_base;
+    for (let j in est) {
+        li = document.createElement('li');
+        li.textContent = `${j} : ${est[j]}`;
+        ul.appendChild(li);
+    }
+    
+
+    main.appendChild(divMain);
+    
+    divMain.appendChild(divCard);
+    divCard.appendChild(divIcons);
+    divCard.appendChild(divImg);
+    divCard.appendChild(divCont);
+    divIcons.appendChild(spanDel);
+    divIcons.appendChild(spanFav);
+    divImg.appendChild(imgPok);
+    divCont.appendChild(h2Nom);
+    divCont.appendChild(pId);
+    divCont.appendChild(pTip);
+    divCont.appendChild(bUl);
+    divCont.appendChild(ul);
+    
+
+
+main.appendChild(divMain);
+
+
+}
+/**
+ * Recibe el valor del buscador y con ello compara(.includes) con el nombre del pokemon dentro de un for.
+ * @param {*} valorDelInput 
+ */
 function verCartasConValor(valorDelInput) {
-    let verFavs = document.createElement('button');
-    verFavs.textContent = 'Favoritos';
-    verFavs.style.color = 'red';
-    verFavs.setAttribute('onclick','verFavoritos()')
+
     
     divMain.setAttribute('class', 'divMain');
 
     for (let i in pokemon) {
         if(pokemon[i]['nombre'].toUpperCase().includes(valorDelInput)){
-        let divCard = document.createElement('div');
-        divCard.setAttribute('class', 'card');
-        comprobarTipo(divCard, pokemon[i]);
+            Cartas(i);
+        } 
 
-        let divIcons = document.createElement('div');
-        divIcons.setAttribute('class', 'card-icons');
-
-        let spanDel = document.createElement('span');
-        spanDel.setAttribute('class', 'material-symbols-outlined');
-        spanDel.textContent = 'delete';
-        let spanFav = document.createElement('span');
-        spanFav.setAttribute('class', 'material-symbols-outlined');
-        spanFav.textContent = 'favorite';
-        for (const j in idFavoritos) {
-            
-            if(idFavoritos[j] == (pokemon[i].id)){
-
-                spanFav.style.color = 'red';
-            } 
-                
-        }
-        spanFav.addEventListener('click',function(){
-            if(spanFav.style.color == 'red'){
-                spanFav.style.color = 'black';
-                let lugar = idFavoritos.indexOf(pokemon[i].id);
-                idFavoritos.splice(lugar,1);
-                
-                window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-            } else {
-                spanFav.style.color = 'red';
-                idFavoritos.push(pokemon[i].id); 
-                window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-
-            }
-            
-        })
-        
-
-        let divImg = document.createElement('div');
-        divImg.setAttribute('class', 'card-image');
-
-        let imgPok = document.createElement('img');
-        imgPok.src = "./img/" + pokemon[i].id + ".png";
-
-        let divCont = document.createElement('div');
-        divCont.setAttribute('class', 'card-content');
-
-        let h2Nom = document.createElement('h2');
-        h2Nom.textContent = pokemon[i].nombre;
-
-        let pId = document.createElement('p');
-        pId.innerHTML = '<b>ID : </b>' + pokemon[i].id;
-
-        let pTip = document.createElement('p');
-        pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[i].tipos;
-
-        let ul = document.createElement('ul');
-        let bUl = document.createElement('b');
-        bUl.textContent = 'ESTADÍSTICAS : ';
-        ul.setAttribute('class', 'custom-list');
-
-        let est = pokemon[i].estadisticas_base;
-        for (let j in est) {
-            li = document.createElement('li');
-            li.textContent = `${j} : ${est[j]}`;
-            ul.appendChild(li);
-        }
-        
-
-        main.appendChild(divMain);
-        
-        divMain.appendChild(divCard);
-        divCard.appendChild(divIcons);
-        divCard.appendChild(divImg);
-        divCard.appendChild(divCont);
-        divIcons.appendChild(spanDel);
-        divIcons.appendChild(spanFav);
-        divImg.appendChild(imgPok);
-        divCont.appendChild(h2Nom);
-        divCont.appendChild(pId);
-        divCont.appendChild(pTip);
-        divCont.appendChild(bUl);
-        divCont.appendChild(ul);
-        
-    }  
     }
     main.appendChild(divMain);
-    divMain.appendChild(verFavs);
+
     
 }
+/**
+ * Recibe el valor de los selects y con ello compara los tipos de los pokemons con los valores recibidos
+ * @param {*} valorDelInput 
+ */
 function verCartasConTipos(valorDelInput,valorDelInput2) {
     
 
-    let verFavs = document.createElement('button');
-    verFavs.textContent = 'Favoritos';
-    verFavs.style.color = 'red';
-    verFavs.setAttribute('onclick','verFavoritos()')
     
     divMain.setAttribute('class', 'divMain');
     //No se me ha ocurrido como hacerlo con una funcion auxliar asique lo he hecho haciendo mucho codigo.
     for (let i in pokemon) {
         
         if((pokemon[i]['tipos'][0] == (valorDelInput) || pokemon[i]['tipos'][1] == (valorDelInput)) && (pokemon[i]['tipos'][0] == (valorDelInput2) || pokemon[i]['tipos'][1] == (valorDelInput2))){
-           
-        let divCard = document.createElement('div');
-        divCard.setAttribute('class', 'card');
-        comprobarTipo(divCard, pokemon[i]);
-
-        let divIcons = document.createElement('div');
-        divIcons.setAttribute('class', 'card-icons');
-
-        let spanDel = document.createElement('span');
-        spanDel.setAttribute('class', 'material-symbols-outlined');
-        spanDel.textContent = 'delete';
-        let spanFav = document.createElement('span');
-        spanFav.setAttribute('class', 'material-symbols-outlined');
-        spanFav.textContent = 'favorite';
-        for (const j in idFavoritos) {
-            
-            if(idFavoritos[j] == (pokemon[i].id)){
-
-                spanFav.style.color = 'red';
-            } 
-                
-        }
-        spanFav.addEventListener('click',function(){
-            if(spanFav.style.color == 'red'){
-                spanFav.style.color = 'black';
-                let lugar = idFavoritos.indexOf(pokemon[i].id);
-                idFavoritos.splice(lugar,1);
-                
-                window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-            } else {
-                spanFav.style.color = 'red';
-                idFavoritos.push(pokemon[i].id); 
-                window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-
-            }
-            
-        })
-        
-
-        let divImg = document.createElement('div');
-        divImg.setAttribute('class', 'card-image');
-
-        let imgPok = document.createElement('img');
-        imgPok.src = "./img/" + pokemon[i].id + ".png";
-
-        let divCont = document.createElement('div');
-        divCont.setAttribute('class', 'card-content');
-
-        let h2Nom = document.createElement('h2');
-        h2Nom.textContent = pokemon[i].nombre;
-
-        let pId = document.createElement('p');
-        pId.innerHTML = '<b>ID : </b>' + pokemon[i].id;
-
-        let pTip = document.createElement('p');
-        pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[i].tipos;
-
-        let ul = document.createElement('ul');
-        let bUl = document.createElement('b');
-        bUl.textContent = 'ESTADÍSTICAS : ';
-        ul.setAttribute('class', 'custom-list');
-
-        let est = pokemon[i].estadisticas_base;
-        for (let j in est) {
-            li = document.createElement('li');
-            li.textContent = `${j} : ${est[j]}`;
-            ul.appendChild(li);
-        }
-        
-
-        main.appendChild(divMain);
-        
-        divMain.appendChild(divCard);
-        divCard.appendChild(divIcons);
-        divCard.appendChild(divImg);
-        divCard.appendChild(divCont);
-        divIcons.appendChild(spanDel);
-        divIcons.appendChild(spanFav);
-        divImg.appendChild(imgPok);
-        divCont.appendChild(h2Nom);
-        divCont.appendChild(pId);
-        divCont.appendChild(pTip);
-        divCont.appendChild(bUl);
-        divCont.appendChild(ul);
-        
+            Cartas(i)
         } 
         else if(valorDelInput == " " && valorDelInput2 != " "){
             if((pokemon[i]['tipos'][0] == (valorDelInput2) || pokemon[i]['tipos'][1] == (valorDelInput2))){
-           
-                let divCard = document.createElement('div');
-                divCard.setAttribute('class', 'card');
-                comprobarTipo(divCard, pokemon[i]);
-        
-                let divIcons = document.createElement('div');
-                divIcons.setAttribute('class', 'card-icons');
-        
-                let spanDel = document.createElement('span');
-                spanDel.setAttribute('class', 'material-symbols-outlined');
-                spanDel.textContent = 'delete';
-                let spanFav = document.createElement('span');
-                spanFav.setAttribute('class', 'material-symbols-outlined');
-                spanFav.textContent = 'favorite';
-                for (const j in idFavoritos) {
-                    
-                    if(idFavoritos[j] == (pokemon[i].id)){
-        
-                        spanFav.style.color = 'red';
-                    } 
-                        
-                }
-                spanFav.addEventListener('click',function(){
-                    if(spanFav.style.color == 'red'){
-                        spanFav.style.color = 'black';
-                        let lugar = idFavoritos.indexOf(pokemon[i].id);
-                        idFavoritos.splice(lugar,1);
-                        
-                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-                    } else {
-                        spanFav.style.color = 'red';
-                        idFavoritos.push(pokemon[i].id); 
-                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-        
-                    }
-                    
-                })
-                
-        
-                let divImg = document.createElement('div');
-                divImg.setAttribute('class', 'card-image');
-        
-                let imgPok = document.createElement('img');
-                imgPok.src = "./img/" + pokemon[i].id + ".png";
-        
-                let divCont = document.createElement('div');
-                divCont.setAttribute('class', 'card-content');
-        
-                let h2Nom = document.createElement('h2');
-                h2Nom.textContent = pokemon[i].nombre;
-        
-                let pId = document.createElement('p');
-                pId.innerHTML = '<b>ID : </b>' + pokemon[i].id;
-        
-                let pTip = document.createElement('p');
-                pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[i].tipos;
-        
-                let ul = document.createElement('ul');
-                let bUl = document.createElement('b');
-                bUl.textContent = 'ESTADÍSTICAS : ';
-                ul.setAttribute('class', 'custom-list');
-        
-                let est = pokemon[i].estadisticas_base;
-                for (let j in est) {
-                    li = document.createElement('li');
-                    li.textContent = `${j} : ${est[j]}`;
-                    ul.appendChild(li);
-                }
-                
-        
-                main.appendChild(divMain);
-                
-                divMain.appendChild(divCard);
-                divCard.appendChild(divIcons);
-                divCard.appendChild(divImg);
-                divCard.appendChild(divCont);
-                divIcons.appendChild(spanDel);
-                divIcons.appendChild(spanFav);
-                divImg.appendChild(imgPok);
-                divCont.appendChild(h2Nom);
-                divCont.appendChild(pId);
-                divCont.appendChild(pTip);
-                divCont.appendChild(bUl);
-                divCont.appendChild(ul);
-                
-                } 
+                Cartas(i)
+            } 
         }
         else if(valorDelInput2 == " " && valorDelInput != " "){
             if((pokemon[i]['tipos'][0] == (valorDelInput) || pokemon[i]['tipos'][1] == (valorDelInput))){
-           
-                let divCard = document.createElement('div');
-                divCard.setAttribute('class', 'card');
-                comprobarTipo(divCard, pokemon[i]);
-        
-                let divIcons = document.createElement('div');
-                divIcons.setAttribute('class', 'card-icons');
-        
-                let spanDel = document.createElement('span');
-                spanDel.setAttribute('class', 'material-symbols-outlined');
-                spanDel.textContent = 'delete';
-                let spanFav = document.createElement('span');
-                spanFav.setAttribute('class', 'material-symbols-outlined');
-                spanFav.textContent = 'favorite';
-                for (const j in idFavoritos) {
-                    
-                    if(idFavoritos[j] == (pokemon[i].id)){
-        
-                        spanFav.style.color = 'red';
-                    } 
-                        
-                }
-                spanFav.addEventListener('click',function(){
-                    if(spanFav.style.color == 'red'){
-                        spanFav.style.color = 'black';
-                        let lugar = idFavoritos.indexOf(pokemon[i].id);
-                        idFavoritos.splice(lugar,1);
-                        
-                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-                    } else {
-                        spanFav.style.color = 'red';
-                        idFavoritos.push(pokemon[i].id); 
-                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-        
-                    }
-                    
-                })
-                
-        
-                let divImg = document.createElement('div');
-                divImg.setAttribute('class', 'card-image');
-        
-                let imgPok = document.createElement('img');
-                imgPok.src = "./img/" + pokemon[i].id + ".png";
-        
-                let divCont = document.createElement('div');
-                divCont.setAttribute('class', 'card-content');
-        
-                let h2Nom = document.createElement('h2');
-                h2Nom.textContent = pokemon[i].nombre;
-        
-                let pId = document.createElement('p');
-                pId.innerHTML = '<b>ID : </b>' + pokemon[i].id;
-        
-                let pTip = document.createElement('p');
-                pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[i].tipos;
-        
-                let ul = document.createElement('ul');
-                let bUl = document.createElement('b');
-                bUl.textContent = 'ESTADÍSTICAS : ';
-                ul.setAttribute('class', 'custom-list');
-        
-                let est = pokemon[i].estadisticas_base;
-                for (let j in est) {
-                    li = document.createElement('li');
-                    li.textContent = `${j} : ${est[j]}`;
-                    ul.appendChild(li);
-                }
-                
-        
-                main.appendChild(divMain);
-                
-                divMain.appendChild(divCard);
-                divCard.appendChild(divIcons);
-                divCard.appendChild(divImg);
-                divCard.appendChild(divCont);
-                divIcons.appendChild(spanDel);
-                divIcons.appendChild(spanFav);
-                divImg.appendChild(imgPok);
-                divCont.appendChild(h2Nom);
-                divCont.appendChild(pId);
-                divCont.appendChild(pTip);
-                divCont.appendChild(bUl);
-                divCont.appendChild(ul);
-                
-                }
+                Cartas(i)
+            }
 
         }else if(valorDelInput2 == " " && valorDelInput == " "){
-            
-                let divCard = document.createElement('div');
-                divCard.setAttribute('class', 'card');
-                comprobarTipo(divCard, pokemon[i]);
-        
-                let divIcons = document.createElement('div');
-                divIcons.setAttribute('class', 'card-icons');
-        
-                let spanDel = document.createElement('span');
-                spanDel.setAttribute('class', 'material-symbols-outlined');
-                spanDel.textContent = 'delete';
-                let spanFav = document.createElement('span');
-                spanFav.setAttribute('class', 'material-symbols-outlined');
-                spanFav.textContent = 'favorite';
-                for (const j in idFavoritos) {
-                    
-                    if(idFavoritos[j] == (pokemon[i].id)){
-        
-                        spanFav.style.color = 'red';
-                    } 
-                        
-                }
-                spanFav.addEventListener('click',function(){
-                    if(spanFav.style.color == 'red'){
-                        spanFav.style.color = 'black';
-                        let lugar = idFavoritos.indexOf(pokemon[i].id);
-                        idFavoritos.splice(lugar,1);
-                        
-                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-                    } else {
-                        spanFav.style.color = 'red';
-                        idFavoritos.push(pokemon[i].id); 
-                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-        
-                    }
-                    
-                })
-                
-        
-                let divImg = document.createElement('div');
-                divImg.setAttribute('class', 'card-image');
-        
-                let imgPok = document.createElement('img');
-                imgPok.src = "./img/" + pokemon[i].id + ".png";
-        
-                let divCont = document.createElement('div');
-                divCont.setAttribute('class', 'card-content');
-        
-                let h2Nom = document.createElement('h2');
-                h2Nom.textContent = pokemon[i].nombre;
-        
-                let pId = document.createElement('p');
-                pId.innerHTML = '<b>ID : </b>' + pokemon[i].id;
-        
-                let pTip = document.createElement('p');
-                pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[i].tipos;
-        
-                let ul = document.createElement('ul');
-                let bUl = document.createElement('b');
-                bUl.textContent = 'ESTADÍSTICAS : ';
-                ul.setAttribute('class', 'custom-list');
-        
-                let est = pokemon[i].estadisticas_base;
-                for (let j in est) {
-                    li = document.createElement('li');
-                    li.textContent = `${j} : ${est[j]}`;
-                    ul.appendChild(li);
-                }
-                
-        
-                main.appendChild(divMain);
-                
-                divMain.appendChild(divCard);
-                divCard.appendChild(divIcons);
-                divCard.appendChild(divImg);
-                divCard.appendChild(divCont);
-                divIcons.appendChild(spanDel);
-                divIcons.appendChild(spanFav);
-                divImg.appendChild(imgPok);
-                divCont.appendChild(h2Nom);
-                divCont.appendChild(pId);
-                divCont.appendChild(pTip);
-                divCont.appendChild(bUl);
-                divCont.appendChild(ul);
-                
-                
-
+            Cartas(i)
         }
          
+    
     }
     main.appendChild(divMain);
-    divMain.appendChild(verFavs);
+
     
 }
+/**
+ * Esta funcion es similar a las anteriores pero no recibe ningun parametro ni compara valores con los pokemons,solo muestra todas las cartas sin excepciones
+ */
 function verCartas() {
-    let verFavs = document.createElement('button');
-    verFavs.textContent = 'Favoritos';
-    verFavs.style.color = 'red';
-    verFavs.setAttribute('onclick','verFavoritos()')
+
     
     divMain.setAttribute('class', 'divMain');
     agregarOwners(divMain);
     for (let i in pokemon) {
-        
-        let divCard = document.createElement('div');
-        divCard.setAttribute('class', 'card');
-        comprobarTipo(divCard, pokemon[i]);
-
-        let divIcons = document.createElement('div');
-        divIcons.setAttribute('class', 'card-icons');
-
-        let spanDel = document.createElement('span');
-        spanDel.setAttribute('class', 'material-symbols-outlined');
-        spanDel.textContent = 'delete';
-        let spanFav = document.createElement('span');
-        spanFav.setAttribute('class', 'material-symbols-outlined');
-        spanFav.textContent = 'favorite';
-        for (const j in idFavoritos) {
-            
-            if(idFavoritos[j] == (pokemon[i].id)){
-
-                spanFav.style.color = 'red';
-            } 
-                
-        }
-        spanFav.addEventListener('click',function(){
-            if(spanFav.style.color == 'red'){
-                spanFav.style.color = 'black';
-                let lugar = idFavoritos.indexOf(pokemon[i].id);
-                idFavoritos.splice(lugar,1);
-                
-                window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-            } else {
-                spanFav.style.color = 'red';
-                idFavoritos.push(pokemon[i].id); 
-                window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-
-            }
-            
-        })
-        
-
-        let divImg = document.createElement('div');
-        divImg.setAttribute('class', 'card-image');
-
-        let imgPok = document.createElement('img');
-        imgPok.src = "./img/" + pokemon[i].id + ".png";
-
-        let divCont = document.createElement('div');
-        divCont.setAttribute('class', 'card-content');
-
-        let h2Nom = document.createElement('h2');
-        h2Nom.textContent = pokemon[i].nombre;
-
-        let pId = document.createElement('p');
-        pId.innerHTML = '<b>ID : </b>' + pokemon[i].id;
-
-        let pTip = document.createElement('p');
-        pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[i].tipos;
-
-        let ul = document.createElement('ul');
-        let bUl = document.createElement('b');
-        bUl.textContent = 'ESTADÍSTICAS : ';
-        ul.setAttribute('class', 'custom-list');
-
-        let est = pokemon[i].estadisticas_base;
-        for (let j in est) {
-            li = document.createElement('li');
-            li.textContent = `${j} : ${est[j]}`;
-            ul.appendChild(li);
-        }
-        
-
-        main.appendChild(divMain);
-        
-        divMain.appendChild(divCard);
-        divCard.appendChild(divIcons);
-        divCard.appendChild(divImg);
-        divCard.appendChild(divCont);
-        divIcons.appendChild(spanDel);
-        divIcons.appendChild(spanFav);
-        divImg.appendChild(imgPok);
-        divCont.appendChild(h2Nom);
-        divCont.appendChild(pId);
-        divCont.appendChild(pTip);
-        divCont.appendChild(bUl);
-        divCont.appendChild(ul);
-        
-    
+        Cartas(i);
     }
-    main.appendChild(divMain);
-    divMain.appendChild(verFavs);
-    
+
 }
-
-
+/**
+ * Funcion implementada para añadir a los creadores de este proyecto como cartas Pokemon desde un principio
+ * @param {*} divMain - Recibe el div del main
+ */
 function agregarOwners(divMain) {
     //TIRSO
     let divCardT = document.createElement('div');
@@ -708,6 +282,7 @@ function agregarOwners(divMain) {
 
     let h2NomT = document.createElement('h2');
     h2NomT.textContent = "TIRSO";
+
 
     let h3Tip = document.createElement('h3');
     h3Tip.textContent = "CREADOR";
@@ -757,8 +332,13 @@ function agregarOwners(divMain) {
     divContI.appendChild(h3TipI);
 
 }
-
+/**
+ * Funcion creada para dar color a los bordes de las cartas dependiendo del tipo de estas, recibe la carta como tal y el pokemon actual para saber su tipo.
+ * @param {*} divCard 
+ * @param {*} pokemonActual 
+ */
 function comprobarTipo(divCard, pokemonActual) {
+
     if (pokemonActual.tipos[0].includes('Fuego') || pokemonActual.tipos[0].includes('Dragón') || pokemonActual.tipos[0].includes('Lucha')) {
         divCard.style.border = '3px solid rgb(124, 11, 11)';
     } else if (pokemonActual.tipos[0].includes('Agua') || pokemonActual.tipos[0].includes('Hielo')) {
@@ -778,113 +358,14 @@ function comprobarTipo(divCard, pokemonActual) {
         
     
 }
-
+/**
+ * Funcion utilizada para que el icono del puntero sea un pokemon aleatorio cada vez que se recargue la página.
+ */
 function puntero() {
     let puntero = Math.floor(Math.random() * pokemon.length) + 1;
     document.body.style.cursor = `url('./img/${puntero}.png'), auto`;
 }
-
-function verFavoritos() {
-    
-    
-    let main = document.querySelector('main');
-    let divMain = document.createElement('div');
-    divMain.setAttribute('class', 'divMain');
-    for (let i in pokemon) {
-        for (const j in idFavoritos) {
-            
-            if(idFavoritos[j] == (pokemon[i].id)){
-
-                
-                let divCard = document.createElement('div');
-                        
-                divCard.setAttribute('class', 'card');
-                comprobarTipo(divCard, pokemon[i]);
-
-                let divIcons = document.createElement('div');
-                divIcons.setAttribute('class', 'card-icons');
-
-                let spanDel = document.createElement('span');
-                spanDel.setAttribute('class', 'material-symbols-outlined');
-                spanDel.textContent = 'delete';
-                let spanFav = document.createElement('span');
-                spanFav.setAttribute('class', 'material-symbols-outlined');
-                spanFav.textContent = 'favorite';
-                for (const j in idFavoritos) {
-                    
-                    if(idFavoritos[j] == (pokemon[i].id)){
-
-                        spanFav.style.color = 'red';
-                    } 
-                        
-                }
-                spanFav.addEventListener('click',function(){
-                    if(spanFav.style.color == 'red'){
-                        spanFav.style.color = 'black';
-                        let lugar = idFavoritos.indexOf(pokemon[i].id);
-                        idFavoritos.splice(lugar,1);
-                        
-                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-                    } else {
-                        spanFav.style.color = 'red';
-                        idFavoritos.push(pokemon[i].id); 
-                        window.localStorage.setItem('favoritos', JSON.stringify(idFavoritos)); 
-
-                    }
-                    
-                })
-                
-
-                let divImg = document.createElement('div');
-                divImg.setAttribute('class', 'card-image');
-
-                let imgPok = document.createElement('img');
-                imgPok.src = "./img/" + pokemon[i].id + ".png";
-
-                let divCont = document.createElement('div');
-                divCont.setAttribute('class', 'card-content');
-
-                let h2Nom = document.createElement('h2');
-                h2Nom.textContent = pokemon[i].nombre;
-
-                let pId = document.createElement('p');
-                pId.innerHTML = '<b>ID : </b>' + pokemon[i].id;
-
-                let pTip = document.createElement('p');
-                pTip.innerHTML = '<b>TIPOS : </b>' + pokemon[i].tipos;
-
-                let ul = document.createElement('ul');
-                let bUl = document.createElement('b');
-                bUl.textContent = 'ESTADÍSTICAS : ';
-                ul.setAttribute('class', 'custom-list');
-
-                let est = pokemon[i].estadisticas_base;
-                for (let j in est) {
-                    li = document.createElement('li');
-                    li.textContent = `${j} : ${est[j]}`;
-                    ul.appendChild(li);
-                }
-                
-
-                main.appendChild(divMain);
-                
-                divMain.appendChild(divCard);
-                divCard.appendChild(divIcons);
-                divCard.appendChild(divImg);
-                divCard.appendChild(divCont);
-                divIcons.appendChild(spanDel);
-                divIcons.appendChild(spanFav);
-                divImg.appendChild(imgPok);
-                divCont.appendChild(h2Nom);
-                divCont.appendChild(pId);
-                divCont.appendChild(pTip);
-                divCont.appendChild(bUl);
-                divCont.appendChild(ul);
-        
-            } 
-                    
-        }
-    }
-    main.appendChild(divMain);
-    
-}
+buscador()
+Bom();
+verCartas();
+buscarPorTipo();

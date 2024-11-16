@@ -4561,8 +4561,127 @@ const pokemon = [
       defensa: 110,
       ataque_especial: 100,
       defensa_especial: 80,
-      velocidad: 30,
+      velocidad: 30
     },
+    habilidades: [
+      {
+        nombre: "Regeneración",
+        descripcion: "Restaura un poco de PS al cambiar de combate."
+      },
+      {
+        nombre: "Ignorante",
+        descripcion: "Ignora los cambios de estadísticas del objetivo al atacar."
+      }
+    ],
+    movimientos: [
+      {
+        nombre: "Psíquico",
+        tipo: "Psíquico",
+        potencia: 90,
+        precision: 100,
+        categoria: "Especial"
+      },
+      {
+        nombre: "Surf",
+        tipo: "Agua",
+        potencia: 90,
+        precision: 100,
+        categoria: "Especial"
+      },
+      {
+        nombre: "Rayo Hielo",
+        tipo: "Hielo",
+        potencia: 90,
+        precision: 100,
+        categoria: "Especial"
+      }
+    ],
+    evoluciones: {
+      pre_evolucion: {
+        id: 79,
+        nombre: "Slowpoke"
+      },
+      evolucion_base: null
+    },
+    peso: 78.5,
+    altura: 1.6,
+    amistad_base: 70,
+    color: "Rosa",
+    género: {
+      macho: 50,
+      hembra: 50
+    },
+    habitat: "Agua",
+    es_legendario: false,
+    es_mitico: false
+  },
+  {
+    id: 81,
+    nombre: "Magnemite",
+    tipos: ["Eléctrico", "Acero"],
+    fuerza_contra: ["Volador", "Roca", "Hada"],
+    debil_contra: ["Fuego", "Tierra", "Lucha"],
+    inmune_contra: ["Veneno"],
+    resistente_a: ["Normal", "Roca", "Bicho", "Acero", "Psíquico", "Hielo", "Dragón", "Hada", "Eléctrico", "Volador"],
+    estadisticas_base: {
+      hp: 25,
+      ataque: 35,
+      defensa: 70,
+      ataque_especial: 95,
+      defensa_especial: 55,
+      velocidad: 45,
+    },
+    habilidades: [
+      {
+        nombre: "Imán",
+        descripcion: "Aumenta la probabilidad de encontrar Pokémon de tipo Acero salvajes.",
+      },
+      {
+        nombre: "Robustez",
+        descripcion: "Evita que el Pokémon sea debilitado de un solo golpe.",
+      },
+    ],
+    movimientos: [
+      {
+        nombre: "Chispazo",
+        tipo: "Eléctrico",
+        potencia: 80,
+        precision: 100,
+        categoria: "Especial",
+      },
+      {
+        nombre: "Bola Voltio",
+        tipo: "Eléctrico",
+        potencia: 60,
+        precision: 100,
+        categoria: "Especial",
+      },
+      {
+        nombre: "Cañón Flash",
+        tipo: "Acero",
+        potencia: 80,
+        precision: 100,
+        categoria: "Especial",
+      },
+    ],
+    evoluciones: {
+      pre_evolucion: null,
+      evolucion_base: {
+        id: 82,
+        nombre: "Magneton",
+      },
+    },
+    peso: 6.0,
+    altura: 0.3,
+    amistad_base: 70,
+    color: "Gris",
+    género: {
+      macho: 0,
+      hembra: 0,
+    },
+    habitat: "Cueva",
+    es_legendario: false,
+    es_mitico: false,
   },
   {
     id: 82,

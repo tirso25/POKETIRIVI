@@ -6,9 +6,9 @@ let divHeader = document.createElement('div');
 //*ESTRUCTURAS DE DATOS
 let pokemonsCopy = [...pokemon];
 let pokemonEliminado = [];
-let pokemonFavorito = [];
+let pokemonFavorito = {};
 let jsoneliminadas = JSON.parse(window.localStorage.getItem('jsonOcultos'));
-let jsonFavorito = JSON.parse(window.localStorage.getItem('jsonFavoritos'));
+let jsonFavorito = JSON.parse(window.localStorage.getItem('jsonFavoritos')) || {};
 let jsonAgregarPokemon = JSON.parse(window.localStorage.getItem('jsonAgregar')) || [];
 let pokemonTodos = pokemonsCopy.concat(jsonAgregarPokemon);
 let idPokemon = pokemonTodos.length;
@@ -216,6 +216,7 @@ function Cartas(numeroPokemon) {
 
     ocultar(spanDel, divCard, pokemonTodos[numeroPokemon].id);
     favorito(spanFav, pokemonTodos[numeroPokemon].id);
+    desFavorito(spanFav, pokemonTodos[numeroPokemon].id);
 
     divMain.appendChild(divCard);
     divCard.appendChild(divIcons);
@@ -405,10 +406,16 @@ function ocultar(spanDel, divCard, pokemonActualId) {
         jsoneliminadas = JSON.parse(window.localStorage.getItem('jsonOcultos'));
     })
 }
+/**
+ * El mismo funcionamiento que ocultar excepto el display
+ * @param {*} spanDel - El icono de eliminar
+ * @param {*} divCard  - La carta entera
+ * @param {*} pokemonActualId - Es la id actual del pokemon
+ */
 function favorito(spanFav, pokemonActual) {
     spanFav.addEventListener('click', function () {
         spanFav.style.color = "#f00";
-        pokemonFavorito.push(pokemonActual);
+        pokemonFavorito[pokemonActual.id] = pokemonActual;
         window.localStorage.setItem('jsonFavoritos', JSON.stringify(pokemonFavorito));
         jsonFavorito = JSON.parse(window.localStorage.getItem('jsonFavoritos'));
     })
@@ -499,6 +506,9 @@ function mostrarOcultos() {
     }
     main.appendChild(divMain);
 }
+/**
+ * El mismo funcionamiento que mostrarOcultos 
+ */
 function mostrarFavoritos() {
     let mostrar = false;
     divMain.setAttribute('class', 'divMain');
@@ -562,6 +572,7 @@ function mostrarFavoritos() {
                 }
 
                 desocultar(spanDel, divCard, pokemonTodos[i].id);
+                desFavorito(spanFav, pokemonTodos[i].id);
 
                 main.appendChild(divMain);
                 divMain.appendChild(divCard);
@@ -607,6 +618,17 @@ function desocultar(spanDel, divCard, pokemonActualId) {
         window.localStorage.setItem('jsonOcultos', JSON.stringify(jsoneliminadas));
         divCard.style.display = 'none';
     })
+}
+/**
+ * El mismo funcionamiento que desocultar 
+ */
+function desFavorito(spanFav, pokemonActual) {
+    spanFav.addEventListener('dblclick', function () {
+        spanFav.style.color = "";
+        delete pokemonFavorito[pokemonActual.id];
+        window.localStorage.setItem('jsonFavoritos', JSON.stringify(pokemonFavorito));
+        jsonFavorito = JSON.parse(window.localStorage.getItem('jsonFavoritos'));
+    });
 }
 /**
  * Esta funcion extrae el pokemon creado del localstorage y lo agrega a la funcion vercartas para que se muestre junto a las demas

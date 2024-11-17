@@ -150,7 +150,6 @@ function buscador() {
     letra.setAttribute('type', 'text');
     letra.setAttribute('placeholder', 'Buscador X Nombre');
     letra.addEventListener('keyup', function () {
-
         valorBuscador(letra);
     })
     header.appendChild(divHeader);
@@ -158,7 +157,6 @@ function buscador() {
     divHeader.appendChild(letra);
 }
 /**
- * 
  * @param {*} letra  - Recoge la/s letra/s recibidas en la funcion buscador, las pone en mayúsculas y las envía a la funcion verCartasConValor()
  */
 function valorBuscador(letra) {
@@ -170,7 +168,7 @@ function valorBuscador(letra) {
 /**
  * El funcionamiento es muy similar a la anterior,recoge los dos valores de los selects (de tipos) y se los envia a la funcion verCartasConTipos()
  * @param {*} input - opcion seleccionada del primer select
- * @param {*} input2  - opcion seleccionada del segundo select 
+ * @param {*} input2  - opcion seleccionada del segundo select
  */
 function valorBuscadorTipo(input, input2) {
     divMain.innerHTML = "";
@@ -178,8 +176,8 @@ function valorBuscadorTipo(input, input2) {
 }
 /**
  * Esta funcion es practicamente la base de toda la Página Web,
- * recibe un pokemon entero,con su tipo,nombre,..., y devuelve la carta con los parametros adecuados y la muestra. 
- * @param {*} numeroPokemon 
+ * recibe un pokemon entero,con su tipo,nombre,..., y devuelve la carta con los parametros adecuados y la muestra.
+ * @param {*} numeroPokemon
  */
 function Cartas(numeroPokemon) {
     let divCard = document.createElement('div');
@@ -262,7 +260,7 @@ function Cartas(numeroPokemon) {
 }
 /**
  * Recibe el valor del buscador y con ello compara(.includes) con el nombre del pokemon dentro de un for.
- * @param {*} valorDelInput 
+ * @param {*} valorDelInput
  */
 function verCartasConValor(valorDelInput) {
     divMain.setAttribute('class', 'divMain');
@@ -277,7 +275,7 @@ function verCartasConValor(valorDelInput) {
 }
 /**
  * Recibe el valor de los selects y con ello compara los tipos de los pokemons con los valores recibidos
- * @param {*} valorDelInput 
+ * @param {*} valorDelInput
  */
 function verCartasConTipos(valorDelInput, valorDelInput2) {
     divMain.setAttribute('class', 'divMain');
@@ -391,8 +389,8 @@ function agregarOwners(divMain) {
 }
 /**
  * Funcion creada para dar color a los bordes de las cartas dependiendo del tipo de estas, recibe la carta como tal y el pokemon actual para saber su tipo.
- * @param {*} divCard 
- * @param {*} pokemonActual 
+ * @param {*} divCard
+ * @param {*} pokemonActual
  */
 function comprobarTipo(divCard, pokemonActual) {
     if (pokemonActual.tipos[0].includes('Fuego') || pokemonActual.tipos[0].includes('Dragón') || pokemonActual.tipos[0].includes('Lucha')) {
@@ -533,7 +531,7 @@ function mostrarOcultos() {
     main.appendChild(divMain);
 }
 /**
- * El mismo funcionamiento que mostrarOcultos 
+ * El mismo funcionamiento que mostrarOcultos
  */
 function mostrarFavoritos() {
     let mostrar = false;
@@ -583,7 +581,7 @@ function desocultar(spanDel, divCard, pokemonActualId) {
     })
 }
 /**
- * El mismo funcionamiento que desocultar 
+ * El mismo funcionamiento que desocultar
  */
 function desFavorito(spanFav, pokemonActual, divCard) {
     spanFav.addEventListener('dblclick', function () {

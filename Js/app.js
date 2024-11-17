@@ -148,7 +148,7 @@ function buscador() {
     let letra = document.createElement('input');
 
     letra.setAttribute('type', 'text');
-    letra.setAttribute('placeholder', 'Escribe aqui lo que quieras buscar');
+    letra.setAttribute('placeholder', 'Buscador X Nombre');
     letra.addEventListener('keyup', function () {
 
         valorBuscador(letra);

@@ -80,7 +80,7 @@ function insertarTipos(selectElements) {
     }
 }
 /**
- * Esta funcion crea un array con la infprmacion almacenada, la cual la extraemos con split del location.seacrh, una vez separada he introducida el el array se mete en el localstorage para utilizarla en la otra página
+ * Esta funcion crea un array con la infprmacion almacenada, la cual la extraemos con split del location.seacrh, una vez separada he introducida el el array y comprobados los dos campos obligatorios se mete en el localstorage para utilizarla en la otra página
  */
 function almacenarPokemonInsert() {
     let datosPokemonInsertar = JSON.parse(window.localStorage.getItem('jsonAgregar')) || [];
@@ -98,8 +98,10 @@ function almacenarPokemonInsert() {
 
     if (tipo1 == "") {
         alert('Tipo 1 no puede estar vacio');
-    } else if (nombre = "") {
+        return;
+    } else if (nombre == "") {
         alert('Nombre no puede estar vacio');
+        return;
     } else {
         let nuevoPokemon = {
             id: id + 1,

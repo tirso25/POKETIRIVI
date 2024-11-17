@@ -3,6 +3,8 @@ let main = document.querySelector('main');
 let divMain = document.createElement('div');
 let header = document.querySelector('header');
 let divHeader = document.createElement('div');
+let divBoton = document.createElement('div');
+divBoton.setAttribute('class', 'header_boton');
 //*ESTRUCTURAS DE DATOS
 let pokemonsCopy = [...pokemon];
 let pokemonEliminado = [];
@@ -21,7 +23,7 @@ buttonOcultos.addEventListener('click', function () {
     mostrarOcultos();
 });
 pOculto.textContent = 'OCULTOS';
-main.appendChild(buttonOcultos);
+divBoton.appendChild(buttonOcultos);
 buttonOcultos.appendChild(pOculto);
 //*BOTON VER FAVORITOS
 let buttonFavoritos = document.createElement('button');
@@ -31,7 +33,7 @@ buttonFavoritos.addEventListener('click', function () {
     mostrarFavoritos();
 });
 pFavorito.textContent = 'FAVORITOS';
-main.appendChild(buttonFavoritos);
+divBoton.appendChild(buttonFavoritos);
 buttonFavoritos.appendChild(pFavorito);
 //*BOTON VER CARTAR
 let buttonCartas = document.createElement('button');
@@ -41,7 +43,7 @@ buttonCartas.addEventListener('click', function () {
     verCartas();
 });
 pCartas.textContent = 'VER CARTAS';
-main.appendChild(buttonCartas);
+divBoton.appendChild(buttonCartas);
 buttonCartas.appendChild(pCartas);
 //*BOTON INSERTAR POKEMON
 let buttonAgregar = document.createElement('button');
@@ -49,9 +51,10 @@ let pAgregar = document.createElement('p');
 let aAgregar = document.createElement('a');
 aAgregar.setAttribute('href', './agregar.html');
 pAgregar.textContent = "AGREGAR POKEMON";
-main.appendChild(aAgregar);
+divBoton.appendChild(aAgregar);
 aAgregar.appendChild(buttonAgregar);
 buttonAgregar.appendChild(pAgregar);
+header.appendChild(divBoton);
 /**
  * Esta funcion añade las caracteristicas de la pantalla,tanto la altura como la anchura de esta,no devuelve ningun valor
  */
@@ -381,7 +384,7 @@ function comprobarTipo(divCard, pokemonActual) {
         divCard.style.border = '3px solid rgb(96, 82, 24)';
     } else if (pokemonActual.tipos[0].includes('Eléctrico')) {
         divCard.style.border = '3px solid rgb(255, 204, 1)';
-    } else if (pokemonActual.tipos[0].includes('Normal')) {
+    } else if (pokemonActual.tipos[0].includes('Normal') || pokemonActual.tipos[0].includes('Volador') || pokemonActual.tipos[0].includes('Acero')) {
         divCard.style.border = '3px solid rgb(75, 75, 75)';
     }
 }
@@ -638,10 +641,8 @@ function agregarPokemon() {
 
     divMain.setAttribute('class', 'divMain');
     for (let i in jsonAgregarPokemon) {
-        idPokemon++;
         let divCard = document.createElement('div');
         divCard.setAttribute('class', 'card');
-
         let divIcons = document.createElement('div');
         divIcons.setAttribute('class', 'card-icons');
 

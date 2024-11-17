@@ -1,3 +1,7 @@
+let inputNombre = document.createElement('input');
+let select1 = document.createElement('select');
+let inputEnviar = document.createElement('input');
+
 let id = JSON.parse(window.localStorage.getItem('idPokemon'));
 console.log(id);
 let tiposPokemon = new Set();
@@ -22,12 +26,8 @@ buttonVolver.appendChild(pVolver);
 function crearFormulario() {
     let div = document.createElement('div');
     let form = document.createElement('form');
-    let inputNombre = document.createElement('input');
-    let select1 = document.createElement('select');
     let select2 = document.createElement('select');
-    let inputEnviar = document.createElement('input');
     let titulo = document.createElement('h2');
-
     titulo.textContent = "Agregar Pokémon";
     div.setAttribute('class', 'form');
     inputNombre.setAttribute('type', 'text');
@@ -96,14 +96,22 @@ function almacenarPokemonInsert() {
     let tipo1 = decodeURIComponent(atributos[1].split("=")[1]);
     let tipo2 = decodeURIComponent(atributos[2].split("=")[1]);
 
-    let nuevoPokemon = {
-        id: id + 1,
-        nombre: nombre,
-        tipos: [tipo1, tipo2]
-    };
-    datosPokemonInsertar.push(nuevoPokemon);
-    window.localStorage.setItem('jsonAgregar', JSON.stringify(datosPokemonInsertar));
-    alert('Datos enviados correctamente');
+    if (tipo1 == "") {
+        alert('Tipo 1 no puede estar vacio');
+    } else if (nombre = "") {
+        alert('Nombre no puede estar vacio');
+    } else {
+        let nuevoPokemon = {
+            id: id + 1,
+            nombre: nombre,
+            tipos: [tipo1, tipo2]
+        };
+        datosPokemonInsertar.push(nuevoPokemon);
+        window.localStorage.setItem('jsonAgregar', JSON.stringify(datosPokemonInsertar));
+        id += 1;
+        window.localStorage.setItem('idPokemon', JSON.stringify(id));
+        alert('Datos enviados correctamente');
+    }
 }
 crearFormulario();
 almacenarPokemonInsert();

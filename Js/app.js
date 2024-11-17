@@ -55,10 +55,9 @@ function botones() {
     let aAgregar = document.createElement('a');
     aAgregar.setAttribute('href', './agregar.html');
     pAgregar.textContent = "AGREGAR POKEMON";
-
-    aAgregar.appendChild(buttonAgregar);
     buttonAgregar.appendChild(pAgregar);
-
+    aAgregar.appendChild(buttonAgregar);
+    divBoton.appendChild(aAgregar);
     //*BOTON MUSICA
     let buttonMusica = document.createElement('button');
     buttonMusica.addEventListener('click', function () {
@@ -243,7 +242,7 @@ function Cartas(numeroPokemon) {
 
     ocultar(spanDel, divCard, pokemonTodos[numeroPokemon].id);
     favorito(spanFav, pokemonTodos[numeroPokemon].id);
-    desFavorito(spanFav, pokemonTodos[numeroPokemon].id);
+    desFavorito(spanFav, pokemonTodos[numeroPokemon].id, divCard);
 
     divMain.appendChild(divCard);
     divCard.appendChild(divIcons);
@@ -442,7 +441,7 @@ function ocultar(spanDel, divCard, pokemonActualId) {
 function favorito(spanFav, pokemonActual) {
     spanFav.addEventListener('click', function () {
         spanFav.style.color = "#f00";
-        pokemonFavorito[pokemonActual.id] = pokemonActual;
+        pokemonFavorito[pokemonActual] = pokemonActual;
         window.localStorage.setItem('jsonFavoritos', JSON.stringify(pokemonFavorito));
         jsonFavorito = JSON.parse(window.localStorage.getItem('jsonFavoritos'));
     })
@@ -551,69 +550,7 @@ function mostrarFavoritos() {
             }
 
             if (mostrar) {
-                comprobarTipo(divCard, pokemonTodos[i]);
-
-                let divIcons = document.createElement('div');
-                divIcons.setAttribute('class', 'card-icons');
-
-                let spanDel = document.createElement('span');
-                spanDel.setAttribute('class', 'material-symbols-outlined delete');
-                spanDel.textContent = 'delete';
-
-                let spanFav = document.createElement('span');
-                spanFav.setAttribute('class', 'material-symbols-outlined fav');
-                spanFav.textContent = 'favorite';
-                spanFav.style.color = "#f00";
-
-                let divImg = document.createElement('div');
-                divImg.setAttribute('class', 'card-image');
-
-                let imgPok = document.createElement('img');
-                if (pokemonTodos[i].id > pokemonsCopy.length) {
-                    imgPok.src = "./img/insertados.gif";
-                } else {
-                    imgPok.src = "./img/" + pokemonTodos[i].id + ".png";
-                }
-                let divCont = document.createElement('div');
-                divCont.setAttribute('class', 'card-content');
-
-                let h2Nom = document.createElement('h2');
-                h2Nom.textContent = pokemonTodos[i].nombre;
-
-                let pId = document.createElement('p');
-                pId.innerHTML = '<b>ID : </b>' + pokemonTodos[i].id;
-
-                let pTip = document.createElement('p');
-                pTip.innerHTML = '<b>TIPOS : </b>' + pokemonTodos[i].tipos;
-
-                let ul = document.createElement('ul');
-                let bUl = document.createElement('b');
-                bUl.textContent = 'ESTADÍSTICAS : ';
-                ul.setAttribute('class', 'custom-list');
-
-                let est = pokemonTodos[i].estadisticas_base;
-                for (let j in est) {
-                    li = document.createElement('li');
-                    li.textContent = `${j} : ${est[j]}`;
-                    ul.appendChild(li);
-                }
-
-                desocultar(spanDel, divCard, pokemonTodos[i].id);
-                desFavorito(spanFav, pokemonTodos[i].id);
-
-                main.appendChild(divMain);
-                divMain.appendChild(divCard);
-                divCard.appendChild(divIcons);
-                divCard.appendChild(divImg);
-                divCard.appendChild(divCont);
-                divIcons.appendChild(spanDel);
-                divIcons.appendChild(spanFav);
-                divImg.appendChild(imgPok);
-                divCont.appendChild(h2Nom);
-                divCont.appendChild(pId);
-                divCont.appendChild(pTip);
-                divCont.appendChild(bUl);
-                divCont.appendChild(ul);
+                Cartas(i);
             }
         }
     }
@@ -641,7 +578,6 @@ function desocultar(spanDel, divCard, pokemonActualId) {
         jsoneliminadas.splice(index, 1);
         pokemonEliminado.splice(index2, 1);
 
-        window.localStorage.clear();
         window.localStorage.setItem('jsonOcultos', JSON.stringify(jsoneliminadas));
         divCard.style.display = 'none';
     })
@@ -649,12 +585,16 @@ function desocultar(spanDel, divCard, pokemonActualId) {
 /**
  * El mismo funcionamiento que desocultar 
  */
-function desFavorito(spanFav, pokemonActual) {
+function desFavorito(spanFav, pokemonActual, divCard) {
     spanFav.addEventListener('dblclick', function () {
-        spanFav.style.color = "";
-        delete pokemonFavorito[pokemonActual.id];
-        window.localStorage.setItem('jsonFavoritos', JSON.stringify(pokemonFavorito));
-        jsonFavorito = JSON.parse(window.localStorage.getItem('jsonFavoritos'));
+        if (pokemonFavorito[pokemonActual]) {
+            delete jsonFavorito[pokemonActual];
+            delete pokemonFavorito[pokemonActual];
+
+            window.localStorage.setItem('jsonFavoritos', JSON.stringify(jsonFavorito));
+            spanFav.style.color = "";
+            divCard.style.display = "none";
+        }
     });
 }
 /**

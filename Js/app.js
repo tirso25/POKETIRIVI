@@ -512,7 +512,7 @@ function mostrarOcultos() {
                     ul.appendChild(li);
                 }
 
-                desocultar(spanDel, divCard, pokemonTodos[i].id);
+
 
                 main.appendChild(divMain);
                 divMain.appendChild(divCard);

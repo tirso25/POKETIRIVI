@@ -64,6 +64,9 @@ function botones() {
     buttonMusica.addEventListener('click', function () {
         document.getElementById('miMusica').play();
     });
+    buttonMusica.addEventListener('dblclick', function () {
+        document.getElementById('miMusica').pause();
+    });
     let pMusica = document.createElement('p');
     pMusica.textContent = 'MUSICA';
     buttonMusica.appendChild(pMusica);

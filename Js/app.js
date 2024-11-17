@@ -55,10 +55,26 @@ function botones() {
     let aAgregar = document.createElement('a');
     aAgregar.setAttribute('href', './agregar.html');
     pAgregar.textContent = "AGREGAR POKEMON";
-    divBoton.appendChild(aAgregar);
+
     aAgregar.appendChild(buttonAgregar);
     buttonAgregar.appendChild(pAgregar);
+
+    //*BOTON MUSICA
+    let buttonMusica = document.createElement('button');
+    buttonMusica.addEventListener('click', function () {
+        document.getElementById('miMusica').play();
+    });
+    let pMusica = document.createElement('p');
+    pMusica.textContent = 'MUSICA';
+    buttonMusica.appendChild(pMusica);
+    divBoton.appendChild(buttonMusica);
     header.appendChild(divBoton);
+    //*AUDIO
+    let audio = document.createElement('audio');
+    audio.setAttribute('id', 'miMusica');
+    audio.setAttribute('src', 'musica.mp3');
+    audio.loop = true;
+    main.appendChild(audio);
 }
 /**
  * Esta funcion añade las caracteristicas de la pantalla,tanto la altura como la anchura de esta,no devuelve ningun valor

@@ -15,46 +15,51 @@ let jsonAgregarPokemon = JSON.parse(window.localStorage.getItem('jsonAgregar')) 
 let pokemonTodos = pokemonsCopy.concat(jsonAgregarPokemon);
 let idPokemon = pokemonTodos.length;
 window.localStorage.setItem('idPokemon', JSON.stringify(idPokemon));
-//*BOTON VER OCULTOS
-let buttonOcultos = document.createElement('button');
-let pOculto = document.createElement('p');
-buttonOcultos.addEventListener('click', function () {
-    divMain.innerHTML = "";
-    mostrarOcultos();
-});
-pOculto.textContent = 'OCULTOS';
-divBoton.appendChild(buttonOcultos);
-buttonOcultos.appendChild(pOculto);
-//*BOTON VER FAVORITOS
-let buttonFavoritos = document.createElement('button');
-let pFavorito = document.createElement('p');
-buttonFavoritos.addEventListener('click', function () {
-    divMain.innerHTML = "";
-    mostrarFavoritos();
-});
-pFavorito.textContent = 'FAVORITOS';
-divBoton.appendChild(buttonFavoritos);
-buttonFavoritos.appendChild(pFavorito);
-//*BOTON VER CARTAR
-let buttonCartas = document.createElement('button');
-let pCartas = document.createElement('p');
-buttonCartas.addEventListener('click', function () {
-    divMain.innerHTML = "";
-    verCartas();
-});
-pCartas.textContent = 'VER CARTAS';
-divBoton.appendChild(buttonCartas);
-buttonCartas.appendChild(pCartas);
-//*BOTON INSERTAR POKEMON
-let buttonAgregar = document.createElement('button');
-let pAgregar = document.createElement('p');
-let aAgregar = document.createElement('a');
-aAgregar.setAttribute('href', './agregar.html');
-pAgregar.textContent = "AGREGAR POKEMON";
-divBoton.appendChild(aAgregar);
-aAgregar.appendChild(buttonAgregar);
-buttonAgregar.appendChild(pAgregar);
-header.appendChild(divBoton);
+/**
+ * Funcion para generar todos los botones y sus acciones
+ */
+function botones() {
+    //*BOTON VER OCULTOS
+    let buttonOcultos = document.createElement('button');
+    let pOculto = document.createElement('p');
+    buttonOcultos.addEventListener('click', function () {
+        divMain.innerHTML = "";
+        mostrarOcultos();
+    });
+    pOculto.textContent = 'OCULTOS';
+    divBoton.appendChild(buttonOcultos);
+    buttonOcultos.appendChild(pOculto);
+    //*BOTON VER FAVORITOS
+    let buttonFavoritos = document.createElement('button');
+    let pFavorito = document.createElement('p');
+    buttonFavoritos.addEventListener('click', function () {
+        divMain.innerHTML = "";
+        mostrarFavoritos();
+    });
+    pFavorito.textContent = 'FAVORITOS';
+    divBoton.appendChild(buttonFavoritos);
+    buttonFavoritos.appendChild(pFavorito);
+    //*BOTON VER CARTAR
+    let buttonCartas = document.createElement('button');
+    let pCartas = document.createElement('p');
+    buttonCartas.addEventListener('click', function () {
+        divMain.innerHTML = "";
+        verCartas();
+    });
+    pCartas.textContent = 'VER CARTAS';
+    divBoton.appendChild(buttonCartas);
+    buttonCartas.appendChild(pCartas);
+    //*BOTON INSERTAR POKEMON
+    let buttonAgregar = document.createElement('button');
+    let pAgregar = document.createElement('p');
+    let aAgregar = document.createElement('a');
+    aAgregar.setAttribute('href', './agregar.html');
+    pAgregar.textContent = "AGREGAR POKEMON";
+    divBoton.appendChild(aAgregar);
+    aAgregar.appendChild(buttonAgregar);
+    buttonAgregar.appendChild(pAgregar);
+    header.appendChild(divBoton);
+}
 /**
  * Esta funcion añade las caracteristicas de la pantalla,tanto la altura como la anchura de esta,no devuelve ningun valor
  */
@@ -689,6 +694,7 @@ function agregarPokemon() {
 }
 //*LLAMADAS A LAS FUNCIONES
 puntero();
+botones();
 buscarPorTipo();
 buscador()
 Bom();

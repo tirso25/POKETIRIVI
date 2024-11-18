@@ -240,7 +240,7 @@ function Cartas(numeroPokemon) {
 
     ocultar(spanDel, divCard, pokemonTodos[numeroPokemon].id);
     favorito(spanFav, pokemonTodos[numeroPokemon].id);
-    desFavorito(spanFav, pokemonTodos[numeroPokemon].id, divCard);
+    desFavorito(spanFav, pokemonTodos[numeroPokemon].id);
 
     divMain.appendChild(divCard);
     divCard.appendChild(divIcons);
@@ -583,7 +583,7 @@ function desocultar(spanDel, divCard, pokemonActualId) {
 /**
  * El mismo funcionamiento que desocultar
  */
-function desFavorito(spanFav, pokemonActual, divCard) {
+function desFavorito(spanFav, pokemonActual) {
     spanFav.addEventListener('dblclick', function () {
         if (pokemonFavorito[pokemonActual]) {
             delete jsonFavorito[pokemonActual];
@@ -591,7 +591,6 @@ function desFavorito(spanFav, pokemonActual, divCard) {
 
             window.localStorage.setItem('jsonFavoritos', JSON.stringify(jsonFavorito));
             spanFav.style.color = "";
-            divCard.style.display = "none";
         }
     });
 }

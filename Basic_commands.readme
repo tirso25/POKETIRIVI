@@ -1,6 +1,0 @@
-git add ''
-git rm ''
-git commit -m ""
-git push -u origin main
-git pull
-git merge

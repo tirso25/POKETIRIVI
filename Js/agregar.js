@@ -6,10 +6,6 @@ let id = JSON.parse(window.localStorage.getItem('idPokemon'));
 console.log(id);
 let tiposPokemon = new Set();
 let main = document.querySelector('main');
-//!NOS DA FALLOS
-/* pVolver.addEventListener('dclick', function () {
-    history.back();
-}); */
 
 let buttonVolver = document.createElement('button');
 let pVolver = document.createElement('p');
